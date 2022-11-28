@@ -1,11 +1,11 @@
 """
 Renders a folder of lossless-cut files (.llc) with associated videos
 """
+import ast
 import os
 import json5
-import ast
 import subprocess
-
+import sys
 
 def process_file(file_name):
     """processes a single llc file; making several clips"""
@@ -27,12 +27,16 @@ def process_clip(file_name, clip_info, index):
     subprocess.run(command)
 
 
-def main():
-    """process everything in the current directory"""
-    for file in os.listdir("."):
-        if file.endswith("-proj.llc"):
-            process_file(file)
-
-
-if __name__ == "__main__":
-    main()
+def main(file=None):
+    if file is None:
+        for file in os.listdir('.'):
+            if file.endswith('-proj.llc'):
+                process_file(file)
+    else:
+        process_file(file)
+        
+if __name__ == '__main__':
+    if len(sys.argv) >= 2:
+        main(sys.argv[1])
+    else:
+        main()
