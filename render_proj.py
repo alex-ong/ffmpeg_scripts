@@ -22,18 +22,28 @@ def process_clip(file_name, clip_info, index, root):
     subprocess.run(command)
     
 def main(root="",file=None):
-    if file is None:
-        for file in os.listdir("."):
+    if file is None:        
+        if root != "":
+            root += "/"
+        for file in os.listdir(root):
             if file.endswith('-proj.llc'):
                 process_file(file, root)
     else:
         process_file(file, root)
         
 if __name__ == '__main__':
+    # A folder with llc's inside (notice the trailing slash)
+    # python render_proj.py T:/VideoEdit/Goodminton-20221116/raw/   
+    
+    # A single llc
+    # python render_proj.py T:/VideoEdit/Goodminton-20221116/raw/GX010026-proj.llc
     if len(sys.argv) >= 2:
         root, file = os.path.split(sys.argv[1])
         if len(root) == 0:
             root = ""
+        if len(file) == 0:
+            file = None
         main(root, file)
+    # Scans current directory
     else:
         main()
