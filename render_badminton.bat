@@ -1,5 +1,6 @@
-rem render_badminton.bat T:/VideoEdit/Goodminton-20221116/raw/
+rem render_badminton.bat T:\VideoEdit\Goodminton-20221116\raw\
 python render_proj.py %1
-python join_clips.py %1/clips/
+python join_clips.py %1clips/
 pause
-explorer %1/clips/
+set openme="%~1clips"
+explorer %openme%
