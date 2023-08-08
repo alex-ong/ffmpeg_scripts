@@ -19,14 +19,16 @@ def create_filelist(root=""):
     with open(f"{root}files.txt", "w") as file_list:
         file_list.writelines(files)
 
+
 def render(root=""):
     command = f"ffmpeg -f concat -safe 0 -i {root}files.txt -c:v copy {root}output.mp4"
-    subprocess.run(command)
-    
+    subprocess.call(command.split())  # can't use .run because MacOS is PoS
+
+
 if __name__ == "__main__":
     # python join_clips.py T:/VideoEdit/Goodminton-20221116/clips/
     root = ""
     if len(sys.argv) >= 2:
         root = sys.argv[1]
     create_filelist(root)
-    render(root)    
+    render(root)

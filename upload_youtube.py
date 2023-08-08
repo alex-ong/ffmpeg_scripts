@@ -10,4 +10,3 @@ if __name__ == "__main__":
         upload(file_path)
     else:
         create_credentials()
-        
