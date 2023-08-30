@@ -30,5 +30,10 @@ if __name__ == "__main__":
     root = ""
     if len(sys.argv) >= 2:
         root = sys.argv[1]
+        if not root.endswith("/"):
+            root = root + "/"
+        if "\\" in root:
+            print("Not compatible with \\ character")
+            sys.exit()
     create_filelist(root)
     render(root)
