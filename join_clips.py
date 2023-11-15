@@ -20,8 +20,10 @@ def create_filelist(root=""):
         file_list.writelines(files)
 
 
-def render(root=""):
-    command = f"ffmpeg -f concat -safe 0 -i {root}files.txt -c:v copy {root}output.mp4"
+def render(root="", output_name="output.mp4"):
+    command = (
+        f"ffmpeg -f concat -safe 0 -i {root}files.txt -c:v copy {root}{output_name}"
+    )
     subprocess.call(command.split())  # can't use .run because MacOS is PoS
 
 
@@ -30,9 +32,9 @@ if __name__ == "__main__":
     root = ""
     if len(sys.argv) >= 2:
         root = sys.argv[1]
-        root = root.replace("\\","/")
+        root = root.replace("\\", "/")
         if not root.endswith("/"):
             root = root + "/"
-        
+
     create_filelist(root)
     render(root)
