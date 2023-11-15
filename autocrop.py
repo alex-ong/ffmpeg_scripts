@@ -106,21 +106,23 @@ def process_video(directory: str):
     subprocess.run(ONE_FPS, shell=True, check=True)
 
     print("exporting timestamps to time.txt")
+    time_txt = "time.txt"
     SCENE_DIFF = (
         f"ffmpeg -i {temp_dir}/1fps.mp4"
-        + " -filter_complex \"select='gt(scene,0.15)',metadata=print:file=time.txt\""
-        + " -vsync vfr temp/img%03d.png"
+        + f" -filter_complex \"select='gt(scene,0.15)',metadata=print:file={time_txt}\""
+        + f" -vsync vfr {temp_dir}/img%03d.png"
     )
     # print(scene_diff)
     subprocess.run(SCENE_DIFF, shell=True, check=True)
+    return time_txt
 
 
-def process_text():
+def process_text(time_txt_path: str, output: str):
     """open time.txt, export youtube.txt"""
     times = []
 
     last_time = 0
-    with open("time.txt", "r", encoding="utf8") as file:
+    with open(time_txt_path, "r", encoding="utf8") as file:
         for line in file:
             if line.startswith("frame"):
                 elements = line.split()
@@ -131,17 +133,18 @@ def process_text():
         times.append(last_time)
 
     lines = [seconds_to_str(time) for time in times]
-    with open("youtube.txt", "w", encoding="utf8") as file:
+    with open(output, "w", encoding="utf8") as file:
         file.writelines("\n".join(lines))
 
 
 def seconds_to_str(seconds):
     """convert from pure seconds to HH:MM:SS"""
-    return f"{seconds//3600:02}:{seconds%3600:02}:{seconds%60:02}"
+    return f"{seconds//3600:02}:{(seconds//60)%60:02}:{seconds%60:02}"
 
 
 if __name__ == "__main__":
     print(sys.argv)
     DIRECTORY = sys.argv[1]
-    process_video(DIRECTORY)
-    process_text()
+    time_txt = process_video(DIRECTORY)
+    youtube_txt = os.path.join(DIRECTORY, "youtube.txt")
+    process_text(time_txt, youtube_txt)
