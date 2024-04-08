@@ -109,7 +109,7 @@ def process_video(directory: str):
     time_txt = "time.txt"
     SCENE_DIFF = (
         f"ffmpeg -i {temp_dir}/1fps.mp4"
-        + f" -filter_complex \"select='gt(scene,0.15)',metadata=print:file={time_txt}\""
+        + f" -filter_complex \"select='gt(scene,0.2)',metadata=print:file={time_txt}\""
         + f" -vsync vfr {temp_dir}/img%03d.png"
     )
     # print(scene_diff)
@@ -138,9 +138,11 @@ def process_text(time_txt_path: str, output: str):
 
 
 def seconds_to_str(seconds):
-    """convert from pure seconds to HH:MM:SS"""
-    return f"{seconds//3600:02}:{(seconds//60)%60:02}:{seconds%60:02}"
-
+    """convert from pure seconds to H:MM:SS"""
+    result = f"{seconds//3600:01}:{(seconds//60)%60:02}:{seconds%60:02}"
+    if result.startswith("0:"):
+        result = result[2:]
+    return result
 
 if __name__ == "__main__":
     print(sys.argv)
