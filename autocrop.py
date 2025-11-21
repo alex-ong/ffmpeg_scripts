@@ -55,7 +55,7 @@ def extract_keyframes(src, temp_dir, start, end, index) -> (subprocess.Popen, st
         output
     ]
     # fmt: on
-    print(command)
+    print(" ".join(command))
 
     process = subprocess.Popen(
         command, shell=True, creationflags=subprocess.DETACHED_PROCESS

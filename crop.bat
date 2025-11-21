@@ -1,0 +1,1 @@
+pipenv run python autocrop.py S:/videoedit-complete/squash
